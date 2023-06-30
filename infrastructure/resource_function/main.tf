@@ -3,43 +3,29 @@ locals {
 }
 
 resource "aws_lambda_function" "example" {
-  filename      = local.filename
+  filename         = local.filename
   source_code_hash = filebase64sha256(local.filename)
-  function_name = var.function_name
-  role          = var.lambda_role_arn
-  handler       = "rust.handler"
-  runtime       = "provided.al2"
-  architectures = ["arm64"]
+  function_name    = var.function_name
+  role             = var.lambda_role_arn
+  handler          = "rust.handler"
+  runtime          = "provided.al2"
+  architectures    = ["arm64"]
 }
-
-# resource "aws_api_gateway_resource" "this" {
-#   parent_id = var.parent_resource_id
-#   rest_api_id = var.rest_api_id
-#   path_part = var.resource_name
-# }
-
-# resource "aws_api_gateway_method" "this" {
-#   authorization = "NONE"
-#   http_method   = "POST"
-#   resource_id   = aws_api_gateway_resource.this.id
-#   rest_api_id   = var.rest_api_id
-# }
 
 resource "aws_apigatewayv2_integration" "example" {
   api_id           = var.api_gateway_id
   integration_type = "AWS_PROXY"
 
-  connection_type           = "INTERNET"
-  # content_handling_strategy = "CONVERT_TO_TEXT"
-  description               = "Lambda example"
-  integration_method        = "POST"
-  integration_uri           = aws_lambda_function.example.invoke_arn
-  passthrough_behavior      = "WHEN_NO_MATCH"
+  connection_type      = "INTERNET"
+  description          = "Lambda ${var.function_name}"
+  integration_method   = "POST"
+  integration_uri      = aws_lambda_function.example.invoke_arn
+  passthrough_behavior = "WHEN_NO_MATCH"
 }
 
 resource "aws_apigatewayv2_route" "example" {
   api_id    = var.api_gateway_id
-  route_key = "GET /hello"
+  route_key = "GET /${var.resource_name}"
 
   target = "integrations/${aws_apigatewayv2_integration.example.id}"
 }
