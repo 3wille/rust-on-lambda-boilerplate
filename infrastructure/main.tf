@@ -20,8 +20,8 @@ resource "aws_apigatewayv2_api" "main" {
 module "example" {
   source = "./resource_function"
 
-  function_name  = "example_api"
-  resource_name  = "example"
+  function_name  = "hello"
+  resource_name  = "hello"
   api_gateway_id = aws_apigatewayv2_api.main.id
   # parent_resource_id = aws_api_gateway_rest_api.main.root_resource_id
   lambda_role_arn = aws_iam_role.iam_for_lambda.arn
