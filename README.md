@@ -1,5 +1,9 @@
 # rust-on-lambda-boilerplate
 
+## Requirements
+* [cargo lambda](https://www.cargo-lambda.info/)
+* [terraform](https://www.terraform.io/)
+
 ## Build
 
 ```shell
