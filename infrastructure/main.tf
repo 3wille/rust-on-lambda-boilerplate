@@ -10,6 +10,11 @@ terraform {
 provider "aws" {
   # Configuration options
   profile = "rust-lambda-boilerplate"
+  default_tags {
+    tags = {
+      Project = var.project_name
+    }
+  }
 }
 
 resource "aws_apigatewayv2_api" "main" {
