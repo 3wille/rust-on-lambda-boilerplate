@@ -10,6 +10,9 @@ resource "aws_lambda_function" "example" {
   handler          = "rust.handler"
   runtime          = "provided.al2"
   architectures    = ["arm64"]
+  environment {
+    variables = var.environment
+  }
 }
 
 resource "aws_apigatewayv2_integration" "example" {
@@ -25,7 +28,7 @@ resource "aws_apigatewayv2_integration" "example" {
 
 resource "aws_apigatewayv2_route" "example" {
   api_id    = var.api_gateway_id
-  route_key = "GET /${var.resource_name}"
+  route_key = var.api_gateway_route
 
   target = "integrations/${aws_apigatewayv2_integration.example.id}"
 }

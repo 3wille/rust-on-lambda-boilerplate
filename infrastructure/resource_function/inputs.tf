@@ -10,6 +10,11 @@ variable "api_gateway_id" {
   type = string
 }
 
+variable "api_gateway_route" {
+  type        = string
+  description = "passed as route_key to the apigw2 route resource"
+}
+
 variable "execution_arn" {
   type = string
 }
@@ -20,4 +25,9 @@ variable "execution_arn" {
 
 variable "lambda_role_arn" {
   type = string
+}
+
+variable "environment" {
+  type    = map(string)
+  default = {}
 }
